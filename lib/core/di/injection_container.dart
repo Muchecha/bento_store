@@ -1,0 +1,42 @@
+import 'package:bento_store/core/config/env_config.dart';
+import 'package:bento_store/core/services/interface/secure_storage.dart';
+import 'package:bento_store/core/services/network/dio_interceptors.dart';
+import 'package:bento_store/core/services/secure_storage_service_impl.dart';
+import 'package:bento_store/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:bento_store/features/auth/domain/repositories/auth_repository.dart';
+import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final GetIt getIt = GetIt.instance;
+
+Future<void> init() async {
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: EnvConfig.apiUrl,
+      connectTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
+      receiveTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
+      sendTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
+    ),
+  );
+  getIt.registerLazySingleton(() => dio);
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton(() => sharedPreferences);
+  getIt.registerLazySingleton(() => const FlutterSecureStorage());
+
+  ///Service
+  getIt.registerLazySingleton<SecureStorage>(() => SecureStorageServiceImpl(getIt()));
+
+  ///Repositories
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(getIt(), getIt()));
+
+  /// Dio com interceptadores
+  getIt<Dio>().interceptors.add(ErrorInterceptor());
+  getIt<Dio>().interceptors.add(RetryInterceptor(dio: getIt()));
+  getIt<Dio>().interceptors.add(AuthInterceptor(getIt()));
+
+  /// Cubits
+  getIt.registerFactory(() => AuthCubit(repository: getIt()));
+}
