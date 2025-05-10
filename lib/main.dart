@@ -3,12 +3,17 @@ import 'package:bento_store/core/routes/app_router.dart';
 import 'package:bento_store/core/theme/app_theme.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/di/injection_container.dart' as di;
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+  ));
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   runApp(const MyApp());
