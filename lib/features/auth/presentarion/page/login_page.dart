@@ -1,6 +1,7 @@
 import 'package:bento_store/core/config/env_config.dart';
 import 'package:bento_store/core/routes/app_router.dart';
 import 'package:bento_store/core/theme/app_theme.dart';
+import 'package:bento_store/core/utils/calculateRespoonsive.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_state.dart';
 import 'package:flutter/foundation.dart';
@@ -40,14 +41,10 @@ class _LoginScreenState extends State<LoginPage> {
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
 
-    final titleSize = _calculateResponsiveFontSize(screenWidth, 0.05, 30, 36);
-    final subtitleSize = _calculateResponsiveFontSize(screenWidth, 0.02, 14, 18);
-    final inputTextSize = _calculateResponsiveFontSize(screenWidth, 0.02, 14, 18);
-    final buttonTextSize = _calculateResponsiveFontSize(
-      screenWidth, 0.018,
-      12,
-      18,
-    );
+    final titleSize = CalculateResponsive.fontSize(screenWidth, 0.05, 30, 36);
+    final subtitleSize = CalculateResponsive.fontSize(screenWidth, 0.02, 14, 18);
+    final inputTextSize = CalculateResponsive.fontSize(screenWidth, 0.02, 14, 18);
+    final buttonTextSize = CalculateResponsive.fontSize(screenWidth, 0.018, 12, 18);
 
 
     return BlocListener<AuthCubit, AuthState>(
@@ -260,15 +257,5 @@ class _LoginScreenState extends State<LoginPage> {
         }
       },
     );
-  }
-
-  double _calculateResponsiveFontSize(
-      double screenWidth,
-      double percentage,
-      double minSize,
-      double maxSize,
-      ) {
-    final size = screenWidth * percentage;
-    return size.clamp(minSize, maxSize);
   }
 }
