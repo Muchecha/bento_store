@@ -1,10 +1,15 @@
 import 'package:bento_store/core/config/env_config.dart';
+import 'package:bento_store/core/services/cache_service_impl.dart';
+import 'package:bento_store/core/services/interface/cache_service.dart';
 import 'package:bento_store/core/services/interface/secure_storage.dart';
 import 'package:bento_store/core/services/network/dio_interceptors.dart';
 import 'package:bento_store/core/services/secure_storage_service_impl.dart';
 import 'package:bento_store/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:bento_store/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
+import 'package:bento_store/features/seller/data/repositories/seller_repository_impl.dart';
+import 'package:bento_store/features/seller/domain/repositories/seller_repository.dart';
+import 'package:bento_store/features/seller/service/cubit/seller_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -28,9 +33,11 @@ Future<void> init() async {
 
   ///Service
   getIt.registerLazySingleton<SecureStorage>(() => SecureStorageServiceImpl(getIt()));
+  getIt.registerLazySingleton<CacheService>(() => CacheServiceImpl(getIt()));
 
   ///Repositories
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(getIt(), getIt()));
+  getIt.registerLazySingleton<SellerRepository>(() => SellerRepositoryImpl(getIt(), getIt()));
 
   /// Dio com interceptadores
   getIt<Dio>().interceptors.add(ErrorInterceptor());
@@ -39,4 +46,5 @@ Future<void> init() async {
 
   /// Cubits
   getIt.registerFactory(() => AuthCubit(repository: getIt()));
+  getIt.registerFactory(() => SellerCubit(repository: getIt()));
 }
