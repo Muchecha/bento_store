@@ -7,6 +7,12 @@ import 'package:bento_store/core/services/secure_storage_service_impl.dart';
 import 'package:bento_store/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:bento_store/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
+import 'package:bento_store/features/product/data/repositories/product_repository_impl.dart';
+import 'package:bento_store/features/product/domain/repositories/product_repository.dart';
+import 'package:bento_store/features/product/service/cubit/product_cubit.dart';
+import 'package:bento_store/features/sale/data/repositories/sale_repository_impl.dart';
+import 'package:bento_store/features/sale/domain/repositories/sale_repository.dart';
+import 'package:bento_store/features/sale/service/cubit/sale_cubit.dart';
 import 'package:bento_store/features/seller/data/repositories/seller_repository_impl.dart';
 import 'package:bento_store/features/seller/domain/repositories/seller_repository.dart';
 import 'package:bento_store/features/seller/service/cubit/seller_cubit.dart';
@@ -38,6 +44,8 @@ Future<void> init() async {
   ///Repositories
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(getIt(), getIt()));
   getIt.registerLazySingleton<SellerRepository>(() => SellerRepositoryImpl(getIt(), getIt()));
+  getIt.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl(getIt(), getIt()));
+  getIt.registerLazySingleton<SaleRepository>(() => SaleRepositoryImpl(getIt()));
 
   /// Dio com interceptadores
   getIt<Dio>().interceptors.add(ErrorInterceptor());
@@ -47,4 +55,6 @@ Future<void> init() async {
   /// Cubits
   getIt.registerFactory(() => AuthCubit(repository: getIt()));
   getIt.registerFactory(() => SellerCubit(repository: getIt()));
+  getIt.registerFactory(() => ProductCubit(repository: getIt()));
+  getIt.registerFactory(() => SaleCubit(repository: getIt()));
 }

@@ -2,6 +2,8 @@ import 'package:bento_store/core/config/env_config.dart';
 import 'package:bento_store/core/routes/app_router.dart';
 import 'package:bento_store/core/theme/app_theme.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
+import 'package:bento_store/features/product/service/cubit/product_cubit.dart';
+import 'package:bento_store/features/sale/service/cubit/sale_cubit.dart';
 import 'package:bento_store/features/seller/service/cubit/seller_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,6 +39,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider(create: (context) => di.getIt<AuthCubit>()),
       BlocProvider(create: (context) => di.getIt<SellerCubit>()),
+      BlocProvider(create: (context) => di.getIt<ProductCubit>()),
+      BlocProvider(create: (context) => di.getIt<SaleCubit>()),
     ], child: ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
