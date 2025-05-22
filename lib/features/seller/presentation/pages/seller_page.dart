@@ -96,55 +96,41 @@ class SellerPage extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<SellerCubit, SellerState>(
         builder: (context, state) {
           if (state is SellerLoaded) {
-            return SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(24.w),
-                child: ElevatedButton(
-                  onPressed:
-                      state.selectedSeller != null
-                          ? () => Navigator.pushNamed(
-                            context,
-                            AppRouter.product,
-                            arguments: state.selectedSeller,
-                          )
-                          : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                    disabledBackgroundColor: AppTheme.textSecondaryColor.withOpacity(0.5),
+            return Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 4,
+                    offset: const Offset(0, -2),
                   ),
-                  child: const Text(
-                    'Continuar',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                onPressed:
+                    state.selectedSeller != null
+                        ? () => Navigator.pushNamed(
+                          context,
+                          AppRouter.product,
+                          arguments: state.selectedSeller,
+                        )
+                        : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                  disabledBackgroundColor: AppTheme.textSecondaryColor.withValues(alpha: 0.5),
+                ),
+                child: const Text(
+                  'Continuar',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             );
           }
-
-          // For loading and error states, you can either:
-          // 1. Show nothing (current behavior)
           return const SizedBox.shrink();
-
-          // 2. Or show a disabled button
-          // return SafeArea(
-          //   child: Padding(
-          //     padding: EdgeInsets.all(24.w),
-          //     child: ElevatedButton(
-          //       onPressed: null, // Disabled
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: AppTheme.primaryColor.withOpacity(0.5),
-          //         padding: EdgeInsets.symmetric(vertical: 16.h),
-          //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-          //       ),
-          //       child: const Text(
-          //         'Continuar',
-          //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          //       ),
-          //     ),
-          //   ),
-          // );
         },
       ),
     );
