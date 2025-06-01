@@ -131,13 +131,10 @@ flutter run
 
 <div align="center">
 
-| ![BentoStore Login](assets/images/BentoStore/login.png)                       | ![BentoStore Home](assets/images/BentoStore/home.png)                    | ![BentoStore Saller](assets/images/BentoStore/vendedor.png)                     
-|-------------------------------------------------------------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| --------------------------------------------------------------                | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| ![BentoStore Product](assets/images/BentoStore/produtor.png)                  | ![BentoStore Resume](assets/images/BentoStore/resumo%20de%20venda.png)   | ![BentoStore Payment](assets/images/BentoStore/pagamento%20em%20dinheiro.png)   
-| --------------------------------------------------------------                | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| ![BentoStore Login](assets/images/BentoStore/login.png)                       | ![BentoStore Home](assets/images/BentoStore/home.png)                  | ![BentoStore Saller](assets/images/BentoStore/vendedor.png)                   
+|-------------------------------------------------------------------------------|------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| ![BentoStore Product](assets/images/BentoStore/produtor.png)                  | ![BentoStore Resume](assets/images/BentoStore/resumo%20de%20venda.png) | ![BentoStore Payment](assets/images/BentoStore/pagamento%20em%20dinheiro.png) 
 | ![BentoStore Success](assets/images/BentoStore/pagamento%20com%20sucesso.png) 
-| --------------------------------------------------------------                | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
 
 </div>
 
