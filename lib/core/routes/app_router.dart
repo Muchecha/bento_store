@@ -1,3 +1,4 @@
+import 'package:bento_store/features/admin/presentation/pages/admin_sale_page.dart';
 import 'package:bento_store/features/auth/presentarion/page/login_page.dart';
 import 'package:bento_store/features/home/presentation/pages/home_page.dart';
 import 'package:bento_store/features/product/presentation/pages/product_page.dart';
@@ -70,7 +71,7 @@ class AppRouter {
       case adminHome:
         return MaterialPageRoute(builder: (context) => const LoginPage());
       case adminSales:
-        return MaterialPageRoute(builder: (context) => const LoginPage());
+        return MaterialPageRoute(builder: (context) => const AdminSalePage());
 
       default:
         return MaterialPageRoute(
