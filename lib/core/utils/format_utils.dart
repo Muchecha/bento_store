@@ -1,12 +1,21 @@
+import 'package:intl/intl.dart';
+
 class FormatUtils {
-  /// Formata um valor double para o formato de moeda brasileiro (R$ 0,00)
   static String formatCurrency(double value) {
     String valueStr = value.toStringAsFixed(2);
-    return valueStr.replaceAll('.', ',');
+    String cleanValue = valueStr.replaceAll(RegExp(r'\D'), '');
+
+    double amount = double.parse(cleanValue) / 100;
+    final formatter = NumberFormat.currency(
+      locale: 'pt_BR',
+      symbol: 'R\$',
+      decimalDigits: 2,
+    );
+    String formattedValue = formatter.format(amount);
+    return formattedValue;
   }
 
-  /// Formata um valor double para o formato de moeda brasileiro com o símbolo (R$ 0,00)
   static String formatCurrencyWithSymbol(double value) {
-    return 'R\$ ${formatCurrency(value)}';
+    return formatCurrency(value);
   }
 }

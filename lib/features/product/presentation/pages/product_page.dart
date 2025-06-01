@@ -17,7 +17,6 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -26,10 +25,14 @@ class ProductPage extends StatelessWidget {
         scrolledUnderElevation: 0,
         leading: IconButton(
           color: AppTheme.textColor,
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushReplacementNamed(context, AppRouter.seller),
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+          onPressed:
+              () => Navigator.pushReplacementNamed(context, AppRouter.seller),
         ),
-        title: Text('Deep Store', style: TextStyle(color: AppTheme.primaryColor, fontSize: 18.sp)),
+        title: Text(
+          'Bento Store',
+          style: TextStyle(color: AppTheme.primaryColor, fontSize: 24.sp),
+        ),
       ),
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
@@ -70,14 +73,20 @@ class ProductPage extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: 'Buscar produto',
                           hintStyle: TextStyle(color: Colors.grey[400]),
-                          prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.grey[400],
+                          ),
                           filled: true,
                           fillColor: Colors.grey[100],
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.r),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 12.h,
+                          ),
                         ),
                       ),
                     ],
@@ -92,17 +101,18 @@ class ProductPage extends StatelessWidget {
                       return BlocBuilder<SaleCubit, SaleState>(
                         builder: (context, saleState) {
                           final isSelected =
-                              saleState is SaleLoaded && saleState.sale.products.contains(product);
+                              saleState is SaleLoaded &&
+                              saleState.sale.products.contains(product);
                           final isAtMaxLimit =
                               saleState is SaleLoaded &&
-                              saleState.sale.products.length >= SaleCubit.maxProducts;
+                              saleState.sale.products.length >=
+                                  SaleCubit.maxProducts;
 
                           return ProductListItem(
                             key: ValueKey(product.id),
                             product: product,
                             seller: seller,
                             isDisabled: !isSelected && isAtMaxLimit,
-
                           );
                         },
                       );
@@ -139,9 +149,9 @@ class ProductPage extends StatelessWidget {
                     children: [
                       Text(
                         'Total de ${state.sale.products.length > 1 ? 'Itens' : 'Item'}: ${state.sale.products.length}',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
                       ),
                       Text(
                         FormatUtils.formatCurrencyWithSymbol(state.total),
@@ -156,25 +166,40 @@ class ProductPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       state.sale.products.isNotEmpty
-                                      ? Navigator.pushNamed(context, AppRouter.sale, arguments: state.sale)
-                                      : null;
+                          ? Navigator.pushNamed(
+                            context,
+                            AppRouter.sale,
+                            arguments: state.sale,
+                          )
+                          : null;
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                      state.sale.products.isNotEmpty
-                                            ? AppTheme.primaryColor
-                          : Colors.grey[400],
+                          state.sale.products.isNotEmpty
+                              ? AppTheme.secondaryColor
+                              : Colors.grey[400],
                       padding: EdgeInsets.symmetric(vertical: 16.h),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.shopping_cart_rounded, color: Colors.white, size: 24.w,),
+                        Icon(
+                          Icons.shopping_cart_rounded,
+                          color: Colors.white,
+                          size: 24.w,
+                        ),
                         SizedBox(width: 6.w),
-                        const Text(
+                        Text(
                           'Ver Carrinho',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleMedium?.copyWith(
+                            color: AppTheme.surfaceColor,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ],
                     ),
@@ -211,7 +236,7 @@ class ProductPage extends StatelessWidget {
                     Text(
                       FormatUtils.formatCurrencyWithSymbol(0),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.primaryColor,
+                        color: AppTheme.textSecondaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -219,21 +244,33 @@ class ProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 ElevatedButton(
-                  onPressed: () { null;
+                  onPressed: () {
+                    null;
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[400],
                     padding: EdgeInsets.symmetric(vertical: 16.h),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.shopping_cart_rounded, color: Colors.white, size: 24.w,),
+                      Icon(
+                        Icons.shopping_cart_rounded,
+                        color: Colors.white,
+                        size: 24.w,
+                      ),
                       SizedBox(width: 6.w),
-                      const Text(
+                      Text(
                         'Ver Carrinho',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.copyWith(
+                          color: AppTheme.surfaceColor,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ],
                   ),

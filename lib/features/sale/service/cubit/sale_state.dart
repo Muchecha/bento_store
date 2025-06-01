@@ -26,6 +26,7 @@ class SaleCanProceedToPayment extends SaleState {
   final Sale sale;
 
   const SaleCanProceedToPayment({required this.sale});
+
   double get total {
     return sale.products.fold(0, (sum, product) => sum + (product.price * 1));
   }
@@ -33,7 +34,14 @@ class SaleCanProceedToPayment extends SaleState {
 
 class SaleProcessing extends SaleState {}
 
-class SaleSuccess extends SaleState {}
+class SaleSuccess extends SaleState {
+  final Sale sale;
+
+  const SaleSuccess({required this.sale});
+
+  @override
+  List<Object> get props => [sale];
+}
 
 class SaleError extends SaleState {
   final String message;

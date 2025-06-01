@@ -35,17 +35,32 @@ class _LoginScreenState extends State<LoginPage> {
     _passwordController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
 
-    final titleSize = CalculateResponsive.fontSize(screenWidth, 0.05, 30, 36);
-    final subtitleSize = CalculateResponsive.fontSize(screenWidth, 0.02, 14, 18);
-    final inputTextSize = CalculateResponsive.fontSize(screenWidth, 0.02, 14, 18);
-    final buttonTextSize = CalculateResponsive.fontSize(screenWidth, 0.018, 12, 18);
-
+    final titleSize = CalculateResponsive.fontSize(screenWidth, 0.045, 36, 42);
+    final subtitleSize = CalculateResponsive.fontSize(
+      screenWidth,
+      0.02,
+      18,
+      24,
+    );
+    final inputTextSize = CalculateResponsive.fontSize(
+      screenWidth,
+      0.02,
+      14,
+      18,
+    );
+    final buttonTextSize = CalculateResponsive.fontSize(
+      screenWidth,
+      0.035,
+      12,
+      18,
+    );
 
     return BlocListener<AuthCubit, AuthState>(
       child: Scaffold(
@@ -67,13 +82,15 @@ class _LoginScreenState extends State<LoginPage> {
                       height: screenWidth * 0.5,
                       errorBuilder:
                           (context, error, stackTrace) =>
-                      const SizedBox.shrink(),
+                              const SizedBox.shrink(),
                     ),
                     Column(
                       children: [
                         Text(
                           EnvConfig.appName,
-                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.headlineLarge?.copyWith(
                             fontSize: titleSize,
                             fontWeight: FontWeight.bold,
                             color: AppTheme.primaryColor,
@@ -84,7 +101,10 @@ class _LoginScreenState extends State<LoginPage> {
                           'Sistema de Vendas',
                           style: Theme.of(
                             context,
-                          ).textTheme.bodyMedium?.copyWith(fontSize: subtitleSize, color: AppTheme.secondaryColor),
+                          ).textTheme.bodyMedium?.copyWith(
+                            fontSize: subtitleSize,
+                            color: AppTheme.secondaryColor,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -101,7 +121,10 @@ class _LoginScreenState extends State<LoginPage> {
                               padding: const EdgeInsets.only(bottom: 16),
                               child: Text(
                                 'Acesse sua conta',
-                                style: TextStyle(fontSize: buttonTextSize, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontSize: buttonTextSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -114,7 +137,10 @@ class _LoginScreenState extends State<LoginPage> {
                             style: TextStyle(fontSize: inputTextSize),
                             decoration: InputDecoration(
                               hintText: 'Digite seu usuário',
-                              hintStyle: TextStyle(color: Colors.grey[400], fontSize: inputTextSize),
+                              hintStyle: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: inputTextSize,
+                              ),
                               prefixIcon: Icon(
                                 Icons.person_rounded,
                                 color: Theme.of(context).colorScheme.primary,
@@ -157,14 +183,17 @@ class _LoginScreenState extends State<LoginPage> {
                             style: TextStyle(fontSize: inputTextSize),
                             decoration: InputDecoration(
                               hintText: 'Digite sua senha',
-                              hintStyle: TextStyle(color: Colors.grey[400], fontSize: inputTextSize),
+                              hintStyle: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: inputTextSize,
+                              ),
                               prefixIcon: Icon(
                                 Icons.lock_rounded,
                                 color: Theme.of(context).colorScheme.primary,
                                 size: inputTextSize * 1.5,
                               ),
                               filled: true,
-                              fillColor: Colors.grey[100],
+                              fillColor: Colors.grey[200],
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide.none,
@@ -186,34 +215,43 @@ class _LoginScreenState extends State<LoginPage> {
                             height: 48,
                             child: ElevatedButton(
                               onPressed:
-                              _isLoading
-                                  ? null
-                                  : () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<AuthCubit>().login(
-                                    _usernameController.text,
-                                    _passwordController.text,
-                                  );
-                                }
-                              },
+                                  _isLoading
+                                      ? null
+                                      : () {
+                                        if (_formKey.currentState!.validate()) {
+                                          context.read<AuthCubit>().login(
+                                            _usernameController.text,
+                                            _passwordController.text,
+                                          );
+                                        }
+                                      },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                elevation: 0,
+                                backgroundColor: AppTheme.primaryColor,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
                               child:
-                              _isLoading
-                                  ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                ),
-                              )
-                                  : Text('Entrar', style: TextStyle(fontSize: buttonTextSize)),
+                                  _isLoading
+                                      ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
+                                        ),
+                                      )
+                                      : Text(
+                                        'Entrar',
+                                        style: TextStyle(
+                                          fontSize: buttonTextSize,
+                                        ),
+                                      ),
                             ),
                           ),
                         ],
@@ -233,26 +271,36 @@ class _LoginScreenState extends State<LoginPage> {
           setState(() => _isLoading = false);
 
           if (state is AuthSuccess) {
-            Navigator.pushNamedAndRemoveUntil(context, AppRouter.home, (route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRouter.home,
+              (route) => false,
+            );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
                 backgroundColor: Colors.red,
-                behavior: kIsWeb ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+                behavior:
+                    kIsWeb ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
                 margin: kIsWeb ? EdgeInsets.all(8) : null,
               ),
             );
           } else if (state is AuthSessionExpired) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text('Sua sessão expirou. Por favor, faça login novamente.'),
+                content: const Text(
+                  'Sua sessão expirou. Por favor, faça login novamente.',
+                ),
                 backgroundColor: Colors.red,
-                behavior: kIsWeb ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+                behavior:
+                    kIsWeb ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
                 margin: kIsWeb ? EdgeInsets.all(8) : null,
               ),
             );
-            Navigator.of(context).pushNamedAndRemoveUntil(AppRouter.login, (route) => false);
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRouter.login, (route) => false);
           }
         }
       },

@@ -1,10 +1,9 @@
 import 'package:bento_store/core/utils/format_utils.dart';
 import 'package:bento_store/features/sale/service/cubit/sale_cubit.dart';
 import 'package:bento_store/features/seller/domain/entities/seller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_theme.dart';
@@ -40,7 +39,6 @@ class ProductListItem extends StatelessWidget {
           child: Material(
             color: isDisabled ? Colors.grey[100] : Colors.white,
             borderRadius: BorderRadius.circular(12.r),
-
             child: Container(
               padding: EdgeInsets.all(8.w),
               child: Stack(
@@ -51,7 +49,7 @@ class ProductListItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.r),
                         child: ColorFiltered(
                           colorFilter: ColorFilter.mode(
-                            Colors.grey,
+                            Colors.transparent,
                             BlendMode.saturation,
                           ),
                           child: CachedNetworkImage(
@@ -61,20 +59,20 @@ class ProductListItem extends StatelessWidget {
                             fit: BoxFit.cover,
                             placeholder:
                                 (context, url) => Container(
-                              width: 80.w,
-                              height: 80.w,
-                              color: Colors.grey[200],
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[200],
+                                  child: const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
                             errorWidget:
                                 (context, url, error) => Container(
-                              width: 50.w,
-                              height: 50.w,
-                              color: Colors.grey[200],
-                              child: const Icon(Icons.image_not_supported),
-                            ),
+                                  width: 50.w,
+                                  height: 50.w,
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.image_not_supported),
+                                ),
                           ),
                         ),
                       ),
@@ -100,23 +98,25 @@ class ProductListItem extends StatelessWidget {
                                 context,
                               ).textTheme.bodySmall?.copyWith(
                                 color:
-                                isDisabled
-                                    ? Colors.grey[400]
-                                    : Colors.grey[600],
+                                    isDisabled
+                                        ? Colors.grey[400]
+                                        : Colors.grey[600],
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              FormatUtils.formatCurrencyWithSymbol(product.price),
+                              FormatUtils.formatCurrencyWithSymbol(
+                                product.price,
+                              ),
                               style: Theme.of(
                                 context,
                               ).textTheme.titleMedium?.copyWith(
                                 color:
-                                isDisabled
-                                    ? Colors.grey[400]
-                                    : AppTheme.primaryColor,
+                                    isDisabled
+                                        ? Colors.grey[400]
+                                        : AppTheme.primaryColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -157,12 +157,18 @@ class ProductListItem extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     right: 8,
-                    child:
-                    Container(
+                    child: Container(
                       height: 28.h,
                       decoration: BoxDecoration(
-                        color: isDisabled ? Colors.grey[200] : AppTheme.surfaceColor,
+                        color:
+                            isDisabled
+                                ? Colors.grey[300]
+                                : AppTheme.surfaceColor,
                         borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(
+                          color: AppTheme.backgroundColor,
+                          width: 1.2,
+                        ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -170,15 +176,25 @@ class ProductListItem extends StatelessWidget {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: isDisabled ? null : () => saleCubit.toggleRemoveProduct(seller, product, context: context),
-                              borderRadius: BorderRadius.circular(14.r),
+                              onTap:
+                                  isDisabled
+                                      ? null
+                                      : () => saleCubit.toggleRemoveProduct(
+                                        seller,
+                                        product,
+                                        context: context,
+                                      ),
+                              borderRadius: BorderRadius.circular(4.r),
                               child: Container(
-                                width: 28.w,
-                                height: 28.h,
+                                width: 32.w,
+                                height: 32.h,
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.remove,
-                                  color: isDisabled ? Colors.grey[400] : AppTheme.primaryColor,
+                                  color:
+                                      isDisabled
+                                          ? Colors.grey[400]
+                                          : AppTheme.primaryColor,
                                   size: 16.w,
                                 ),
                               ),
@@ -190,14 +206,25 @@ class ProductListItem extends StatelessWidget {
                             alignment: Alignment.center,
                             child: AnimatedSwitcher(
                               duration: Duration(milliseconds: 200),
-                              transitionBuilder: (Widget child, Animation<double> animation) {
-                                return ScaleTransition(scale: animation, child: child);
+                              transitionBuilder: (
+                                Widget child,
+                                Animation<double> animation,
+                              ) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
                               },
                               child: Text(
                                 '$quantity',
                                 key: ValueKey<int>(quantity),
                                 style: TextStyle(
-                                  color: isDisabled ? Colors.grey[600] : AppTheme.primaryColor,
+                                  color:
+                                      isDisabled
+                                          ? Colors.grey[400]
+                                          : (quantity > 0
+                                              ? AppTheme.primaryColor
+                                              : AppTheme.textSecondaryColor),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14.sp,
                                 ),
@@ -207,15 +234,25 @@ class ProductListItem extends StatelessWidget {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: isDisabled ? null : () => saleCubit.toggleProduct(seller, product, context: context),
-                              borderRadius: BorderRadius.circular(14.r),
+                              onTap:
+                                  isDisabled
+                                      ? null
+                                      : () => saleCubit.toggleProduct(
+                                        seller,
+                                        product,
+                                        context: context,
+                                      ),
+                              borderRadius: BorderRadius.circular(4.r),
                               child: Container(
-                                width: 28.w,
-                                height: 28.h,
+                                width: 32.w,
+                                height: 32.h,
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.add,
-                                  color: isDisabled ? Colors.grey[400] : AppTheme.primaryColor,
+                                  color:
+                                      isDisabled
+                                          ? Colors.grey[400]
+                                          : AppTheme.primaryColor,
                                   size: 16.w,
                                 ),
                               ),

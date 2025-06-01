@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_theme.dart';
@@ -75,57 +74,71 @@ class _AnimatedChangeDisplayState extends State<AnimatedChangeDisplay>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final isPositive = widget.change >= 0;
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 16.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Troco',
-                style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.surfaceColor,
+                AppTheme.surfaceColor.withValues(alpha: 0.8),
+              ],
+            ),
+            border: Border.all(color: AppTheme.textColor),
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.secondaryColor.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              SizedBox(height: 8.h),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: FadeTransition(
-                  opacity: _opacityAnimation,
-                  child: ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: Text(
-                      'R\$ ${FormatUtils.formatCurrency(_valueAnimation.value)}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color:
-                            isPositive
-                                ? AppTheme.successColor
-                                : AppTheme.errorColor,
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Troco',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 12.sp,
+                      color: AppTheme.textColor.withValues(alpha: 0.8),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Text(
+                        '${isPositive ? '' : '-'} ${FormatUtils.formatCurrency(_valueAnimation.value)}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              isPositive
+                                  ? AppTheme.successColor
+                                  : AppTheme.errorColor,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-              SizedBox(height: 8.h),
-              if (!isPositive)
-                Text(
-                  'Valor insuficiente',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.red.shade700,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
+              Icon(
+                Icons.change_circle_rounded,
+                size: 32.sp,
+                color: AppTheme.primaryColor,
+              ),
             ],
           ),
         );
