@@ -50,8 +50,7 @@ Este projeto utiliza a [Fake Store API](https://fakestoreapi.com/) para demonstr
     - `POST /carts` - Criar nova venda
 
 > **Nota:** Para uso em produção, substitua pela sua API real.
-
-## ⚙️ Como Rodar o Projeto
+>
 
 ## ⚙️ Como Rodar o Projeto
 
