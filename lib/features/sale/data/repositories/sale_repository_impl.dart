@@ -11,7 +11,7 @@ class SaleRepositoryImpl implements SaleRepository {
   SaleRepositoryImpl(this._networkService);
 
   @override
-  Future<void> createSale(int userId, List<Product> products) async {
+  Future<Sale> createSale(int userId, List<Product> products) async {
     try {
       final response = await _networkService.post(
         '/carts',
@@ -39,6 +39,32 @@ class SaleRepositoryImpl implements SaleRepository {
           'Falha ao criar venda: código ${response.statusCode}',
         );
       }
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data;
+        final List<dynamic> products = data['products'];
+
+        return Sale(
+          id: data['id'],
+          userId: data['userId'],
+          products:
+              products
+                  .map<Product>(
+                    (product) => Product(
+                      id: product['id'],
+                      title: product['title'] ?? '',
+                      price: (product['price'] ?? 0.0).toDouble(),
+                      description: product['description'] ?? '',
+                      category: product['category'] ?? '',
+                      image: product['image'] ?? '',
+                      rating: 0.0,
+                      ratingCount: 0,
+                    ),
+                  )
+                  .toList(),
+        );
+      }
+
+      return Sale(id: 0, userId: 0, products: []);
     } on DioException catch (e) {
       throw AppException('Erro ao criar venda: ${e.error}');
     } catch (e) {

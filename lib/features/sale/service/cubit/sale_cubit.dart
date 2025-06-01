@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../product/domain/entities/product.dart';
@@ -61,8 +60,14 @@ class SaleCubit extends Cubit<SaleState> {
   }
 
   void removeProduct(Product product) {
-    _productQuantities.remove(product.id);
+    final productId = product.id;
+    final currentQuantity = _productQuantities[productId] ?? 0;
+
+    if (currentQuantity <= 0) return;
+
+    _productQuantities.remove(productId);
     sale.products.remove(product);
+    _productQuantities[productId] = currentQuantity - 1;
     emit(SaleLoaded(sale: sale.copyWith(products: List.from(sale.products))));
   }
 
@@ -101,10 +106,10 @@ class SaleCubit extends Cubit<SaleState> {
       try {
         emit(SaleProcessing());
 
-        await _repository.createSale(sale.userId, sale.products);
+        var result = await _repository.createSale(sale.userId, sale.products);
 
         clearCart();
-        emit(SaleSuccess());
+        emit(SaleSuccess(sale: result));
       } catch (e) {
         emit(SaleError(e.toString()));
       }

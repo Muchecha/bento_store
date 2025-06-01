@@ -37,18 +37,31 @@ class NavigationButtons extends StatelessWidget {
               textColor: Colors.white,
               borderRadius: 8.r,
               fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
             ),
           ),
           SizedBox(height: 12.h),
-          TextButton(
-            onPressed:
-                onHomePressed ??
-                () =>
-                    Navigator.of(context).pushNamedAndRemoveUntil(AppRouter.home, (route) => false),
-            child: Text(
-              homeButtonText ?? 'Voltar para a Tela Inicial',
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.grey[600],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  side: BorderSide(color: Colors.grey[300]!, width: 1.2),
+                ),
+              ),
+              onPressed:
+                  onHomePressed ??
+                  () => Navigator.of(
+                    context,
+                  ).pushNamedAndRemoveUntil(AppRouter.home, (route) => false),
+              child: Text(
+                homeButtonText ?? 'Voltar para a Tela Inicial',
+                style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+              ),
             ),
           ),
         ],

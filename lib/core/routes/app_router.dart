@@ -29,27 +29,42 @@ class AppRouter {
       case seller:
         return MaterialPageRoute(builder: (_) => const SellerPage());
       case product:
-        return MaterialPageRoute(builder: (_) => ProductPage(seller: settings.arguments as Seller));
+        return MaterialPageRoute(
+          builder: (_) => ProductPage(seller: settings.arguments as Seller),
+        );
       case sale:
         return MaterialPageRoute(
-          builder: (context) => SaleSummaryPage(sale: settings.arguments as Sale),
+          builder:
+              (context) => SaleSummaryPage(sale: settings.arguments as Sale),
         );
       case cashPayment:
         return MaterialPageRoute(
           builder:
               (context) => CashPaymentPage(
-                total: (settings.arguments as Map<String, dynamic>)['total'] as double,
-                sale: (settings.arguments as Map<String, dynamic>)['sale'] as Sale,
+                total:
+                    (settings.arguments as Map<String, dynamic>)['total']
+                        as double,
+                sale:
+                    (settings.arguments as Map<String, dynamic>)['sale']
+                        as Sale,
               ),
         );
       case paymentSuccess:
         return MaterialPageRoute(
           builder:
               (context) => PaymentSuccessPage(
-                totalAmount: (settings.arguments as Map<String, dynamic>)['totalAmount'] as double,
-                amountPaid: (settings.arguments as Map<String, dynamic>)['amountPaid'] as double,
-                change: (settings.arguments as Map<String, dynamic>)['change'] as double,
-                sale: (settings.arguments as Map<String, dynamic>)['sale'] as Sale,
+                totalAmount:
+                    (settings.arguments as Map<String, dynamic>)['totalAmount']
+                        as double,
+                amountPaid:
+                    (settings.arguments as Map<String, dynamic>)['amountPaid']
+                        as double,
+                change:
+                    (settings.arguments as Map<String, dynamic>)['change']
+                        as double,
+                sale:
+                    (settings.arguments as Map<String, dynamic>)['sale']
+                        as Sale,
               ),
         );
       case adminHome:
@@ -59,7 +74,10 @@ class AppRouter {
 
       default:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(body: Center(child: Text('Route not found ${settings.name}'))),
+          builder:
+              (_) => Scaffold(
+                body: Center(child: Text('Route not found ${settings.name}')),
+              ),
         );
     }
   }

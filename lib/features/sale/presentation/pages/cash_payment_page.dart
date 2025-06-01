@@ -1,6 +1,5 @@
-
-
 import 'package:bento_store/core/routes/app_router.dart';
+import 'package:bento_store/core/theme/app_theme.dart';
 import 'package:bento_store/core/utils/format_utils.dart';
 import 'package:bento_store/features/sale/domain/entities/sale.dart';
 import 'package:bento_store/features/sale/presentation/widgets/animated_change_display.dart';
@@ -32,6 +31,7 @@ class _CashPaymentPageState extends State<CashPaymentPage>
   @override
   void initState() {
     super.initState();
+    _change = 0 - widget.total;
     _processAnimController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
@@ -43,18 +43,6 @@ class _CashPaymentPageState extends State<CashPaymentPage>
     _amountController.dispose();
     _processAnimController.dispose();
     super.dispose();
-  }
-
-  void _updateAmount(String value) {
-    try {
-      final amount = double.parse(value);
-      setState(() {
-        _amountPaid = amount;
-        _change = amount - widget.total;
-      });
-    } catch (e) {
-      // Ignorar erros de formatação
-    }
   }
 
   void _setAmountPaid(double amount) {
@@ -97,7 +85,7 @@ class _CashPaymentPageState extends State<CashPaymentPage>
               'totalAmount': widget.total,
               'amountPaid': _amountPaid,
               'change': _change,
-              'sale': widget.sale,
+              'sale': state.sale,
             },
           );
         } else if (state is SaleError) {
@@ -119,10 +107,14 @@ class _CashPaymentPageState extends State<CashPaymentPage>
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            color: AppTheme.textColor,
+            onPressed: () => Navigator.pop(context),
           ),
-          title: const Text('Pagamento em Dinheiro'),
+          title: Text(
+            'Bento Store',
+            style: TextStyle(color: AppTheme.primaryColor, fontSize: 24.sp),
+          ),
         ),
         body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -134,101 +126,58 @@ class _CashPaymentPageState extends State<CashPaymentPage>
                   AppBar().preferredSize.height -
                   MediaQuery.of(context).padding.top,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20.h),
-                  // Total da venda
+                  SizedBox(height: 12.h),
+                  Text(
+                    'Pagamento em Dinheiro',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: AppTheme.textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Expanded(child: SizedBox()),
                   Column(
                     children: [
                       Text(
                         'Valor Total',
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: 18.sp,
                           color: Colors.grey[600],
                         ),
                       ),
-                      SizedBox(height: 8.h),
                       Text(
                         FormatUtils.formatCurrencyWithSymbol(widget.total),
                         style: TextStyle(
-                          fontSize: 28.sp,
+                          fontSize: 32.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: AppTheme.secondaryColor,
                         ),
                       ),
                     ],
                   ),
-
-                  SizedBox(height: 24.h),
-
-                  // Valor Recebido
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Valor Recebido',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: TextField(
-                          controller: _amountController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 16.h,
-                              horizontal: 12.w,
-                            ),
-                            hintText: '0,00',
-                            hintStyle: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 20.sp,
-                            ),
-                            prefixText: 'R\$ ',
-                            prefixStyle: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) {
-                            // Converter entrada com vírgula para processamento com ponto
-                            final processValue = value.replaceAll(',', '.');
-                            _updateAmount(processValue);
-                          },
-                        ),
-                      ),
-                    ],
+                  SizedBox(height: 12.h),
+                  MultiSelectQuickAmountButtons(
+                    onTotalChanged: (double amount) {
+                      _setAmountPaid(amount);
+                    },
+                    onAmountSelected: (double amount, int quantity) {},
                   ),
-                  SizedBox(height: 24.h),
+                  SizedBox(height: 12.h),
                   AnimatedChangeDisplay(change: _change),
-                  QuickAmountButtons(
-                    totalAmount: widget.total,
-                    onAmountSelected: _setAmountPaid,
-                  ),
-                  const Expanded(child: SizedBox()),
+                  SizedBox(height: 24.h),
                   Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
                     child: SizedBox(
                       height: 48.h,
+                      width: double.infinity,
                       child: ElevatedButton(
                         onPressed:
-                            _isProcessing || _change < 0 ? null : _finalizeSale,
+                            _isProcessing || _change <= 0
+                                ? null
+                                : _finalizeSale,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF00C853),
                           foregroundColor: Colors.white,
@@ -258,7 +207,7 @@ class _CashPaymentPageState extends State<CashPaymentPage>
                                       'Processando...',
                                       style: TextStyle(
                                         fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.normal,
                                       ),
                                     ),
                                   ],
@@ -267,7 +216,7 @@ class _CashPaymentPageState extends State<CashPaymentPage>
                                   'Finalizar Pagamento',
                                   style: TextStyle(
                                     fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                       ),

@@ -25,24 +25,30 @@ class PaymentMethodButton extends StatelessWidget {
         onTap: isEnabled ? onTap : null,
         borderRadius: BorderRadius.circular(12.r),
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.all(8.h),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: isEnabled ? AppTheme.primaryColor : Colors.grey[300]!,
+            gradient: LinearGradient(
+              colors: [
+                isEnabled ? AppTheme.secondaryColor : Colors.grey[300]!,
+                isEnabled
+                    ? AppTheme.secondaryColor.withValues(alpha: 0.8)
+                    : Colors.grey[300]!,
+              ],
             ),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
                 icon,
                 color: isEnabled ? AppTheme.primaryColor : Colors.grey[400],
               ),
-              SizedBox(height: 4.h),
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: isEnabled ? AppTheme.primaryColor : Colors.grey[400],
+                  color: isEnabled ? AppTheme.surfaceColor : Colors.grey[400],
                 ),
               ),
             ],

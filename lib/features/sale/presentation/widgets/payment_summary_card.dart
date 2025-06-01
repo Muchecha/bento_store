@@ -4,12 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/format_utils.dart';
 
 class PaymentSummaryCard extends StatelessWidget {
+  final String sale;
+  final String saller;
+  final String date;
   final double totalAmount;
   final double amountPaid;
   final double change;
 
   const PaymentSummaryCard({
     super.key,
+    required this.sale,
+    required this.saller,
+    required this.date,
     required this.totalAmount,
     required this.amountPaid,
     required this.change,
@@ -28,6 +34,14 @@ class PaymentSummaryCard extends StatelessWidget {
       ),
       child: Column(
         children: [
+          _buildSummaryRow('Venda', sale),
+          SizedBox(height: 8.h),
+          _buildSummaryRow('Vendedor', saller),
+          SizedBox(height: 8.h),
+          _buildSummaryRow('Data', date),
+          SizedBox(height: 8.h),
+          Divider(color: Colors.grey.shade300),
+          SizedBox(height: 8.h),
           _buildSummaryRow(
             'Valor Total',
             FormatUtils.formatCurrencyWithSymbol(totalAmount),
@@ -37,9 +51,9 @@ class PaymentSummaryCard extends StatelessWidget {
             'Valor Pago',
             FormatUtils.formatCurrencyWithSymbol(amountPaid),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 8.h),
           Divider(color: Colors.grey.shade300),
-          SizedBox(height: 12.h),
+          SizedBox(height: 8.h),
           _buildSummaryRow(
             'Troco',
             FormatUtils.formatCurrencyWithSymbol(change),

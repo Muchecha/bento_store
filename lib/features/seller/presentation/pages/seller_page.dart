@@ -19,11 +19,15 @@ class SellerPage extends StatelessWidget {
         backgroundColor: AppTheme.backgroundColor,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_rounded),
           color: AppTheme.textColor,
-          onPressed: () => Navigator.pushReplacementNamed(context, AppRouter.home),
+          onPressed:
+              () => Navigator.pushReplacementNamed(context, AppRouter.home),
         ),
-        title: Text('Deep Store', style: TextStyle(color: AppTheme.primaryColor, fontSize: 18.sp)),
+        title: Text(
+          'Bento Store',
+          style: TextStyle(color: AppTheme.primaryColor, fontSize: 24.sp),
+        ),
       ),
       body: BlocBuilder<SellerCubit, SellerState>(
         builder: (context, state) {
@@ -67,12 +71,16 @@ class SellerPage extends StatelessWidget {
                 SizedBox(height: 12.h),
                 Expanded(
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 0,
-                      childAspectRatio: 4,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 0,
+                          childAspectRatio: 4,
+                        ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 12.h,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                     itemCount: state.sellers.length,
                     itemBuilder: (context, index) {
                       final seller = state.sellers[index];
@@ -118,14 +126,17 @@ class SellerPage extends StatelessWidget {
                         )
                         : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryColor,
+                  backgroundColor: AppTheme.secondaryColor,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  disabledBackgroundColor: AppTheme.textSecondaryColor.withValues(alpha: 0.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  disabledBackgroundColor: AppTheme.textSecondaryColor
+                      .withValues(alpha: 0.5),
                 ),
                 child: const Text(
                   'Continuar',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                 ),
               ),
             );
