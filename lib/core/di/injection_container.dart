@@ -4,6 +4,7 @@ import 'package:bento_store/core/services/interface/cache_service.dart';
 import 'package:bento_store/core/services/interface/secure_storage.dart';
 import 'package:bento_store/core/services/network/dio_interceptors.dart';
 import 'package:bento_store/core/services/secure_storage_service_impl.dart';
+import 'package:bento_store/features/admin/service/cubit/admin_sale_cubit.dart';
 import 'package:bento_store/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:bento_store/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bento_store/features/auth/service/cubit/auth_cubit.dart';
@@ -38,14 +39,24 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
 
   ///Service
-  getIt.registerLazySingleton<SecureStorage>(() => SecureStorageServiceImpl(getIt()));
+  getIt.registerLazySingleton<SecureStorage>(
+    () => SecureStorageServiceImpl(getIt()),
+  );
   getIt.registerLazySingleton<CacheService>(() => CacheServiceImpl(getIt()));
 
   ///Repositories
-  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(getIt(), getIt()));
-  getIt.registerLazySingleton<SellerRepository>(() => SellerRepositoryImpl(getIt(), getIt()));
-  getIt.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl(getIt(), getIt()));
-  getIt.registerLazySingleton<SaleRepository>(() => SaleRepositoryImpl(getIt()));
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(getIt(), getIt()),
+  );
+  getIt.registerLazySingleton<SellerRepository>(
+    () => SellerRepositoryImpl(getIt(), getIt()),
+  );
+  getIt.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(getIt(), getIt()),
+  );
+  getIt.registerLazySingleton<SaleRepository>(
+    () => SaleRepositoryImpl(getIt()),
+  );
 
   /// Dio com interceptadores
   getIt<Dio>().interceptors.add(ErrorInterceptor());
@@ -57,4 +68,5 @@ Future<void> init() async {
   getIt.registerFactory(() => SellerCubit(repository: getIt()));
   getIt.registerFactory(() => ProductCubit(repository: getIt()));
   getIt.registerFactory(() => SaleCubit(repository: getIt()));
+  getIt.registerFactory(() => AdminSaleCubit(repository: getIt()));
 }
