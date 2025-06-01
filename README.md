@@ -170,6 +170,6 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 <div align="center">
 
-Desenvolvido carinho por Murilo Nascimento.
+Desenvolvido com carinho por Murilo Nascimento.
 
 </div>
