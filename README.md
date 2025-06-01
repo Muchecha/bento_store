@@ -123,6 +123,7 @@ flutter run
 - [ ] App para iOS
 - [ ] Dashboard web
 - [ ] API própria
+```
 
 ## 📸 Capturas de Tela
 
