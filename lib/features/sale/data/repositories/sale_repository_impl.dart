@@ -34,12 +34,12 @@ class SaleRepositoryImpl implements SaleRepository {
         },
       );
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != 200 && response.statusCode != 201) {
         throw AppException(
           'Falha ao criar venda: código ${response.statusCode}',
         );
       }
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> data = response.data;
         final List<dynamic> products = data['products'];
 

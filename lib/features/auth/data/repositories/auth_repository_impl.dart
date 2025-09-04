@@ -9,8 +9,6 @@ class AuthRepositoryImpl implements AuthRepository {
   final SecureStorage _secureStorage;
   final Dio _networkService;
 
-  // AuthRepositoryImpl(this._secureStorage, this._networkService);
-
   static const String _tokenKey = 'admin_token';
   static const String _tokenExpiryKey = 'admin_token_expiry';
   static const int _sessionTimeoutMinutes = 30;
@@ -18,10 +16,47 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._networkService, this._secureStorage);
 
   @override
+  Future<String> login(AuthCredentials credentials) async {
+    try {
+      final response = await _networkService.post(
+        '/auth/login',
+        data: credentials.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        final token = response.data['token'] as String;
+        await _secureStorage.saveToken(key: _tokenKey, value: token);
+        await _saveExpiryTimestamp();
+
+        return token;
+      } else if (response.statusCode == 201) {
+        final token = response.data['token'] as String;
+        await _secureStorage.saveToken(key: _tokenKey, value: token);
+        await _saveExpiryTimestamp();
+
+        return token;
+      }
+       else {
+        throw AppException('Falha na autenticação');
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw AppException('Usuário ou senha inválidos');
+      }
+
+      throw AppException(e.error.toString());
+    } catch (e) {
+      throw AppException(
+        'Erro inesperado durante a autenticação: ${e.toString()}',
+      );
+    }
+  }
+
+  @override
   Future<String?> getToken() async {
     if (await _isSessionExpired()) {
-    await logout();
-    return null;
+      await logout();
+      return null;
     }
 
     await _saveExpiryTimestamp();
@@ -36,30 +71,6 @@ class AuthRepositoryImpl implements AuthRepository {
     return !await _isSessionExpired();
   }
 
-  @override
-  Future<String> login(AuthCredentials credentials) async {
-    try {
-      final response = await _networkService.post('/auth/login', data: credentials.toJson());
-
-      if (response.statusCode == 200) {
-        final token = response.data['token'] as String;
-        await _secureStorage.saveToken(key: _tokenKey, value: token);
-        await _saveExpiryTimestamp();
-
-        return token;
-      } else {
-        throw AppException('Falha na autenticação');
-      }
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw AppException('Usuário ou senha inválidos');
-      }
-
-      throw AppException(e.error.toString());
-    } catch (e) {
-      throw AppException('Erro inesperado durante a autenticação: ${e.toString()}');
-    }
-  }
 
   @override
   Future<void> logout() async {
@@ -79,7 +90,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<void> _saveExpiryTimestamp() async {
     final expiryTime =
-        DateTime.now().add(Duration(minutes: _sessionTimeoutMinutes)).millisecondsSinceEpoch;
+        DateTime.now()
+            .add(Duration(minutes: _sessionTimeoutMinutes))
+            .millisecondsSinceEpoch;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_tokenExpiryKey, expiryTime);

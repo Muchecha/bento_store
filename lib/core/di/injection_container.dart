@@ -38,13 +38,13 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => sharedPreferences);
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
 
-  ///Service
+  //Service
   getIt.registerLazySingleton<SecureStorage>(
     () => SecureStorageServiceImpl(getIt()),
   );
   getIt.registerLazySingleton<CacheService>(() => CacheServiceImpl(getIt()));
 
-  ///Repositories
+  //Repositories
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(getIt(), getIt()),
   );
@@ -58,12 +58,12 @@ Future<void> init() async {
     () => SaleRepositoryImpl(getIt()),
   );
 
-  /// Dio com interceptadores
+  // Dio com interceptadores
   getIt<Dio>().interceptors.add(ErrorInterceptor());
   getIt<Dio>().interceptors.add(RetryInterceptor(dio: getIt()));
   getIt<Dio>().interceptors.add(AuthInterceptor(getIt()));
 
-  /// Cubits
+  // Cubits
   getIt.registerFactory(() => AuthCubit(repository: getIt()));
   getIt.registerFactory(() => SellerCubit(repository: getIt()));
   getIt.registerFactory(() => ProductCubit(repository: getIt()));

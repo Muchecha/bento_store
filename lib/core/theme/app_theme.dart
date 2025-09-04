@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color primaryColor = Color(0xFFFFB400);
@@ -39,14 +39,8 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: textColor,
         ),
-        bodyLarge: TextStyle(
-          fontSize: 16.sp,
-          color: Colors.black87,
-        ),
-        bodyMedium: TextStyle(
-          fontSize: 14.sp,
-          color: Colors.black87,
-        ),
+        bodyLarge: TextStyle(fontSize: 16.sp, color: Colors.black87),
+        bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black87),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: primaryColor,
@@ -68,7 +62,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -103,14 +97,8 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
-        bodyLarge: TextStyle(
-          fontSize: 16.sp,
-          color: Colors.white70,
-        ),
-        bodyMedium: TextStyle(
-          fontSize: 14.sp,
-          color: Colors.white70,
-        ),
+        bodyLarge: TextStyle(fontSize: 16.sp, color: Colors.white70),
+        bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.white70),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: textColor,
@@ -138,7 +126,7 @@ class AppTheme {
           ),
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),

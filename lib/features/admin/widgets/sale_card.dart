@@ -102,7 +102,7 @@ class SaleCard extends StatelessWidget {
         SizedBox(height: 8.h),
         _buildInfoRow(
           icon: Icons.shopping_bag_rounded,
-          text: '${sale.products?.length ?? 0} produto(s)',
+          text: '${sale.products.length ?? 0} produto(s)',
         ),
       ],
     );

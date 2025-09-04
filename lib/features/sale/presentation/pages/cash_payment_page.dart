@@ -175,7 +175,7 @@ class _CashPaymentPageState extends State<CashPaymentPage>
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed:
-                            _isProcessing || _change <= 0
+                            _isProcessing || _change < 0
                                 ? null
                                 : _finalizeSale,
                         style: ElevatedButton.styleFrom(
